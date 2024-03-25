@@ -1,0 +1,8 @@
+.env
+*.log
+vendor/
+*.db
+*.out
+bin/
+.idea/
+.vscode/
