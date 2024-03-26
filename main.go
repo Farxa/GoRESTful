@@ -61,6 +61,13 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
     json.NewEncoder(w).Encode(users)
 }
 
+func enableCors(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*") // In production, replace * with your frontend's address
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		next.ServeHTTP(w, r)
+	})
+}
 
 func main() {
 	var err error
@@ -76,5 +83,6 @@ func main() {
 	router.HandleFunc("/users", createUser).Methods("POST")
 	router.HandleFunc("/users", getUsers).Methods("GET")
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	handler := enableCors(router)
+    log.Fatal(http.ListenAndServe(":8080", handler))
 }
