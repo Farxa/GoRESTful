@@ -1,4 +1,7 @@
 <script>
+  import Signup from "./signup.svelte";
+  import "../app.css";
+
     let users = [];
   
     async function fetchUsers() {
@@ -10,12 +13,6 @@
   </script>
   
   <main>
-    <h1>Users</h1>
-    {#each users as user}
-      <div>
-        <p>Username: {user.username}</p>
-        <p>Email: {user.email}</p> 
-      </div>
-    {/each}
+    <Signup />
   </main>
   
