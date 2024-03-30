@@ -63,11 +63,21 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
 
 func enableCors(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Set headers for CORS
 		w.Header().Set("Access-Control-Allow-Origin", "*") // In production, replace * with your frontend's address
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE") 
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization") 
+
+		// Handle preflight requests
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return // Preflight does not require further handling
+		}
+
 		next.ServeHTTP(w, r)
 	})
 }
+
 
 func main() {
 	var err error
